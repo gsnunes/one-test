@@ -1,6 +1,6 @@
 {
   "name": "@one/client-main",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -9,7 +9,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "@one/ds-main": "1.0.0"
+    "@one/ds-main": "0.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
