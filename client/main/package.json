@@ -1,9 +1,9 @@
 {
   "name": "@one/client-main",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "private": true,
   "dependencies": {
-    "@one/ds-main": "^0.0.1-beta.0",
+    "@one/ds-main": "^0.0.1-beta.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
