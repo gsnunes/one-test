@@ -1,0 +1,31 @@
+version: '3'
+services:
+  client-main:
+    build:
+      context: ./client/main
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    volumes:
+      - ./client/main:/usr/src/app
+  ds-main:
+    build:
+      context: ./ds/main
+    ports:
+      - "6006:6006"
+    volumes:
+      - ./ds/main:/usr/src/app
+  server-user:
+    build:
+      context: ./server/user
+    ports:
+      - "9000:3000"
+    volumes:
+      - ./server/user:/usr/src/app
+  server-initiative:
+    build:
+      context: ./server/initiative
+    ports:
+      - "9001:3000"
+    volumes:
+      - ./server/initiative:/usr/src/app
