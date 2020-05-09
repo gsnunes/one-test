@@ -8,6 +8,7 @@ services:
     stdin_open: true
     volumes:
       - ./client/main:/usr/src/app
+      - /usr/src/app/node_modules
   ds-main:
     build:
       context: ./ds/main
@@ -15,6 +16,7 @@ services:
       - "6006:6006"
     volumes:
       - ./ds/main:/usr/src/app
+      - /usr/src/app/node_modules
   server-user:
     build:
       context: ./server/user
@@ -22,6 +24,7 @@ services:
       - "9000:3000"
     volumes:
       - ./server/user:/usr/src/app
+      - /usr/src/app/node_modules
   server-initiative:
     build:
       context: ./server/initiative
@@ -29,3 +32,4 @@ services:
       - "9001:3000"
     volumes:
       - ./server/initiative:/usr/src/app
+      - /usr/src/app/node_modules
