@@ -1,45 +1,46 @@
 version: '2.4'
 services:
-  client-main:
-    build:
-      context: ./client/main
-    container_name: one-client-main
-    ports:
-      - 3000:3000
-    stdin_open: true
-    volumes:
-      - ./client/main:/usr/src/app
-      - /usr/src/app/node_modules/
+  # client-main:
+  #   build:
+  #     context: ./client/main
+  #   container_name: one-client-main
+  #   ports:
+  #     - 3000:3000
+  #   stdin_open: true
+  #   volumes:
+  #     - ./client/main:/usr/src/app
+  #     - /usr/src/app/node_modules/
   db-mysql-user:
+    command: --default-authentication-plugin=mysql_native_password
     container_name: one-db-mysql-user
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: user
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: main
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-    image: mysql:5.7
+    image: mysql
     ports:
       - 3306:3306
-  ds-main:
-    build:
-      context: ./ds/main
-    container_name: one-ds-main
-    ports:
-      - 6006:6006
-    volumes:
-      - ./ds/main:/usr/src/app
-      - /usr/src/app/node_modules/
-  server-initiative:
-    build:
-      context: ./server/initiative
-    container_name: one-server-initiative
-    ports:
-      - 9000:3000
-    volumes:
-      - ./server/initiative:/usr/src/app
-      - /usr/src/app/node_modules/
+  # ds-main:
+  #   build:
+  #     context: ./ds/main
+  #   container_name: one-ds-main
+  #   ports:
+  #     - 6006:6006
+  #   volumes:
+  #     - ./ds/main:/usr/src/app
+  #     - /usr/src/app/node_modules/
+  # server-initiative:
+  #   build:
+  #     context: ./server/initiative
+  #   container_name: one-server-initiative
+  #   ports:
+  #     - 9000:3000
+  #   volumes:
+  #     - ./server/initiative:/usr/src/app
+  #     - /usr/src/app/node_modules/
   server-user:
     build:
       context: ./server/user
@@ -47,6 +48,8 @@ services:
     depends_on:
       db-mysql-user:
         condition: service_healthy
+    environment:
+      DB_HOST: db-mysql-user
     ports:
       - 9001:3000
     volumes:
