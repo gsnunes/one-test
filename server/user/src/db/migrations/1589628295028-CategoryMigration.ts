@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class UserMigration1589550810531 implements MigrationInterface {
+export class CategoryMigration1589628295028 implements MigrationInterface {
   private table = new Table({
-    name: 'users',
+    name: 'categories',
     columns: [
       {
         name: 'id',
@@ -12,10 +12,14 @@ export class UserMigration1589550810531 implements MigrationInterface {
         generationStrategy: 'increment',
       },
       {
-        name: 'email',
+        name: 'name',
         type: 'varchar',
         length: '255',
-        isUnique: true,
+        isNullable: false,
+      },
+      {
+        name: 'description',
+        type: 'text',
         isNullable: false,
       },
       {

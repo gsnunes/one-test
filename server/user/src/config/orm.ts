@@ -10,7 +10,7 @@ const options: TypeOrmModuleOptions = {
   database: 'main',
   synchronize: true,
   entities: [path.resolve(__dirname, '..', 'db', 'models', '*')],
-  migrations: [path.resolve(__dirname, '..', 'db', 'models', '*')],
+  migrations: [path.resolve(__dirname, '..', 'db', 'migrations', '*')],
   cli: {
     migrationsDir: 'src/db/migrations',
   },

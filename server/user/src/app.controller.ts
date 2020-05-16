@@ -1,5 +1,4 @@
 import { Controller, Get } from '@nestjs/common';
-// import { AppService } from './app.service';
 import RepoService from './repo.service';
 
 @Controller()
@@ -14,6 +13,6 @@ export class AppController {
 
   @Get()
   async getHello(): Promise<string> {
-    return `There are ${await this.repoService.userRepo.count()} existent users`;
+    return `Users: ${await this.repoService.userRepo.count()};<br> Categories: ${await this.repoService.categoryRepo.count()}`;
   }
 }

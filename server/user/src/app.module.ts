@@ -7,8 +7,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import RepoModule from './repo.module';
 import UserResolver from './resolvers/user.resolver';
+import CategoryResolver from './resolvers/category.resolver';
 
-const gqlImports = [UserResolver];
+const gqlImports = [UserResolver, CategoryResolver];
 
 @Module({
   imports: [
