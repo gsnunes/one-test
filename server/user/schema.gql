@@ -2,17 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+type Message {
   id: Float!
-  email: String!
+  userId: Float!
+  content: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  user: User!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type User {
+  id: Float!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
 
 type Category {
   id: Float!
@@ -27,11 +36,16 @@ type Query {
   getUser(id: Float!): User
   getCategories: [Category!]!
   getCategory(id: Float!): Category
+  getMessages: [Message!]!
+  getMessagesFromUser(userId: Float!): [Message!]!
+  getMessage(id: Float!): Message
 }
 
 type Mutation {
   createOrLoginUser(data: UserInput!): User!
   createCategory(data: CategoryInput!): Category!
+  createMessage(data: MessageInput!): Message!
+  deleteMessage(data: DeleteMessageInput!): Message!
 }
 
 input UserInput {
@@ -41,4 +55,18 @@ input UserInput {
 input CategoryInput {
   name: String!
   description: String!
+}
+
+input MessageInput {
+  content: String!
+  userId: Float!
+}
+
+input DeleteMessageInput {
+  id: Float!
+  userId: Float!
+}
+
+type Subscription {
+  messageAdded: Message!
 }

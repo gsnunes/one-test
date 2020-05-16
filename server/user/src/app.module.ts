@@ -8,8 +8,9 @@ import { AppService } from './app.service';
 import RepoModule from './repo.module';
 import UserResolver from './resolvers/user.resolver';
 import CategoryResolver from './resolvers/category.resolver';
+import MessageResolver from './resolvers/message.resolver';
 
-const gqlImports = [UserResolver, CategoryResolver];
+const gqlImports = [UserResolver, CategoryResolver, MessageResolver];
 
 @Module({
   imports: [

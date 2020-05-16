@@ -4,10 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import RepoService from './repo.service';
 import User from './db/models/user.entity';
 import Category from './db/models/category.entity';
+import Message from './db/models/message.entity';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Category])],
+  imports: [TypeOrmModule.forFeature([User, Category, Message])],
   providers: [RepoService],
   exports: [RepoService],
 })

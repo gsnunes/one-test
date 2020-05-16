@@ -5,7 +5,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import Message from './message.entity';
 
 @ObjectType()
 @Entity({ name: 'users' })
@@ -25,4 +28,8 @@ export default class User {
   @Field()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  // Associations
+  @OneToMany(() => Message, (message) => message.userConnection)
+  messageConnection: Promise<Message[]>;
 }
