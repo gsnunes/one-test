@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLFederationModule } from '@nestjs/graphql';
 
 import * as ormOptions from './config/orm';
 import { AppController } from './app.controller';
@@ -17,9 +17,8 @@ const gqlImports = [UserResolver, CategoryResolver, MessageResolver];
     TypeOrmModule.forRoot(ormOptions),
     RepoModule,
     ...gqlImports,
-    GraphQLModule.forRoot({
+    GraphQLFederationModule.forRoot({
       autoSchemaFile: 'schema.gql',
-      installSubscriptionHandlers: true,
       playground: true,
     }),
   ],
