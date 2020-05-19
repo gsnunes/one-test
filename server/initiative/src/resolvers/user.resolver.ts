@@ -1,6 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { KafkaMessage } from '@nestjs/microservices/external/kafka-options.interface';
 
 import RepoService from '../repo.service';
 import User from '../db/models/user.entity';
@@ -11,19 +10,21 @@ export default class UserResolver {
   constructor(private readonly repoService: RepoService) {}
 
   @Query(() => [User])
-  public async getUsers(): Promise<User[]> {
+  public async getInitiativeUsers(): Promise<User[]> {
     return this.repoService.userRepo.find();
   }
 
   @Query(() => User, { nullable: true })
-  public async getUser(@Args('id') id: number): Promise<User> {
+  public async getInitiativeUser(@Args('id') id: number): Promise<User> {
     return this.repoService.userRepo.findOne(id);
   }
 
+  @MessagePattern('users.new.user')
   @Mutation(() => User)
-  public async createOrLoginUser(
-    @Args('data') input: UserInput,
+  public async createInitiativeUser(
+    @Payload() input: UserInput,
   ): Promise<User> {
+    console.log('RECEIVED USER');
     let user = await this.repoService.userRepo.findOne({
       where: { email: input.email.toLowerCase().trim() },
     });
@@ -36,15 +37,6 @@ export default class UserResolver {
       await this.repoService.userRepo.save(user);
     }
 
-    console.log('ADD USER');
-    this.repoService.client.send('users.new.user', user);
-
     return user;
-  }
-
-  @MessagePattern('users.new.user')
-  sendWorld(@Payload() data: KafkaMessage): string {
-    console.log('SHOW USER');
-    return `${data.value} world!`;
   }
 }

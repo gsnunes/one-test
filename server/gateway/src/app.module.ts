@@ -14,6 +14,7 @@ import { AppService } from './app.service';
       gateway: {
         serviceList: [
           { name: 'user', url: `http://${process.env.SERVER_USER_HOST}:3000/graphql` },
+          { name: 'initiative', url: `http://${process.env.SERVER_INITIATIVE_HOST}:3000/graphql` },
         ],
       },
     }),

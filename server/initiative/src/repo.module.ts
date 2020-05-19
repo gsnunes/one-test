@@ -3,14 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 import RepoService from './repo.service';
+import Initiative from './db/models/initiative.entity';
 import User from './db/models/user.entity';
-import Category from './db/models/category.entity';
-import Message from './db/models/message.entity';
 
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Category, Message]),
+    TypeOrmModule.forFeature([Initiative, User]),
     ClientsModule.register([
       {
         name: 'HERO_SERVICE',
@@ -21,12 +20,12 @@ import Message from './db/models/message.entity';
             brokers: [`${process.env.BROKER_HOST}:29092`],
           },
           consumer: {
-            groupId: 'users-consumer',
+            groupId: 'users-consumer'
           },
           producer: {
             allowAutoTopicCreation: true,
           },
-        },
+        }
       },
     ]),
   ],
