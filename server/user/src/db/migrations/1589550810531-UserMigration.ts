@@ -19,6 +19,18 @@ export class UserMigration1589550810531 implements MigrationInterface {
         isNullable: false,
       },
       {
+        name: 'first_name',
+        type: 'varchar',
+        length: '255',
+        isNullable: false,
+      },
+      {
+        name: 'last_name',
+        type: 'varchar',
+        length: '255',
+        isNullable: false,
+      },
+      {
         name: 'created_at',
         type: 'timestamp',
         isNullable: false,

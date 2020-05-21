@@ -7,4 +7,7 @@ export default class InitiativeInput {
 
   @Field()
   readonly description: string;
+
+  @Field()
+  readonly userId: number;
 }

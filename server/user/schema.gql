@@ -29,6 +29,8 @@ scalar DateTime
 type User {
   id: Float!
   email: String!
+  firstName: String!
+  lastName: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -53,6 +55,7 @@ type Query {
 
 type Mutation {
   createOrLoginUser(data: UserInput!): User!
+  deleteUser(data: DeleteUserInput!): User!
   createCategory(data: CategoryInput!): Category!
   createMessage(data: MessageInput!): Message!
   deleteMessage(data: DeleteMessageInput!): Message!
@@ -60,6 +63,12 @@ type Mutation {
 
 input UserInput {
   email: String!
+  firstName: String!
+  lastName: String!
+}
+
+input DeleteUserInput {
+  id: Float!
 }
 
 input CategoryInput {

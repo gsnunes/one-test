@@ -51,6 +51,10 @@ services:
     environment:
       DB_HOST: db-mysql-initiative
       BROKER_HOST: broker
+    healthcheck:
+      test: ["CMD", "wget" ,"-qO-", "localhost:3000"]
+      timeout: 20s
+      retries: 10
     ports:
       - 9001:3000
     volumes:
@@ -66,6 +70,10 @@ services:
     environment:
       DB_HOST: db-mysql-user
       BROKER_HOST: broker
+    healthcheck:
+      test: ["CMD", "wget" ,"-qO-", "localhost:3000"]
+      timeout: 20s
+      retries: 10
     ports:
       - 9002:3000
     volumes:
@@ -76,7 +84,10 @@ services:
       context: ./server/gateway
     container_name: one-server-gateway
     depends_on:
-      - server-user
+      server-initiative:
+        condition: service_healthy
+      server-user:
+        condition: service_healthy
     environment:
       SERVER_USER_HOST: server-user
       SERVER_INITIATIVE_HOST: server-initiative

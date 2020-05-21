@@ -22,6 +22,14 @@ export default class User {
   email: string;
 
   @Field()
+  @Column({ name: 'first_name' })
+  firstName: string;
+
+  @Field()
+  @Column({ name: 'last_name' })
+  lastName: string;
+
+  @Field()
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

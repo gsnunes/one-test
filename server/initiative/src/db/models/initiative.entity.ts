@@ -5,7 +5,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import User from './user.entity';
 
 @ObjectType()
 @Entity({ name: 'initiatives' })
@@ -29,4 +32,16 @@ export default class Initiative {
   @Field()
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @Field()
+  @Column({ name: 'user_id' })
+  userId: number;
+
+  @Field(() => User)
+  user: User;
+
+  // Associations
+  @ManyToOne(() => User, (user) => user.initiativeConnection, { primary: true })
+  @JoinColumn({ name: 'user_id' })
+  userConnection: Promise<User>;
 }

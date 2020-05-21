@@ -1,14 +1,23 @@
+import { OnModuleInit } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { KafkaMessage } from '@nestjs/microservices/external/kafka-options.interface';
+import { Kafka } from 'kafkajs';
 
 import RepoService from '../repo.service';
 import User from '../db/models/user.entity';
-import UserInput from './input/user.input';
+import UserInput, { DeleteUserInput } from './input/user.input';
 
 @Resolver(() => User)
-export default class UserResolver {
+export default class UserResolver implements OnModuleInit {
   constructor(private readonly repoService: RepoService) {}
+
+  private kafka: Kafka;
+
+  onModuleInit() {
+    this.kafka = new Kafka({
+      clientId: 'server-user',
+      brokers: [`${process.env.BROKER_HOST}:29092`],
+    });
+  }
 
   @Query(() => [User])
   public async getUsers(): Promise<User[]> {
@@ -31,20 +40,54 @@ export default class UserResolver {
     if (!user) {
       user = this.repoService.userRepo.create({
         email: input.email.toLowerCase().trim(),
+        firstName: input.firstName.toLowerCase().trim(),
+        lastName: input.lastName.toLowerCase().trim(),
       });
 
       await this.repoService.userRepo.save(user);
     }
 
-    console.log('ADD USER');
-    this.repoService.client.send('users.new.user', user);
+    try {
+      const producer = this.kafka.producer();
+
+      await producer.connect();
+      await producer.send({
+        topic: 'user',
+        messages: [{ key: 'user-create', value: JSON.stringify(input) }],
+      });
+
+      await producer.disconnect();
+    } catch (error) {
+      console.log(error);
+    }
 
     return user;
   }
 
-  @MessagePattern('users.new.user')
-  sendWorld(@Payload() data: KafkaMessage): string {
-    console.log('SHOW USER');
-    return `${data.value} world!`;
+  @Mutation(() => User)
+  public async deleteUser(@Args('data') input: DeleteUserInput): Promise<User> {
+    const user = await this.repoService.userRepo.findOne(input.id);
+
+    if (!user) throw new Error('User does not exists');
+
+    const copy = { ...user };
+
+    await this.repoService.userRepo.remove(user);
+
+    try {
+      const producer = this.kafka.producer();
+
+      await producer.connect();
+      await producer.send({
+        topic: 'user',
+        messages: [{ key: 'user-delete', value: JSON.stringify(input) }],
+      });
+
+      await producer.disconnect();
+    } catch (error) {
+      console.log(error);
+    }
+
+    return copy;
   }
 }

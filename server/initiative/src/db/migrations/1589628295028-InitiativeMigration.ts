@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class InitiativeMigration1589628295028 implements MigrationInterface {
   private table = new Table({
@@ -34,7 +34,19 @@ export class InitiativeMigration1589628295028 implements MigrationInterface {
         isNullable: false,
         default: 'now()',
       },
+      {
+        name: 'user_id',
+        type: 'integer',
+        isNullable: false,
+      },
     ],
+  });
+
+  private foreignKey = new TableForeignKey({
+    columnNames: ['user_id'],
+    referencedColumnNames: ['id'],
+    onDelete: 'CASCADE',
+    referencedTableName: 'users',
   });
 
   public async up(queryRunner: QueryRunner): Promise<any> {

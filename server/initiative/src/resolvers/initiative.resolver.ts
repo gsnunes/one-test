@@ -8,11 +8,6 @@ import InitiativeInput from './input/initiative.input';
 export default class InitiatieResolver {
   constructor(private readonly repoService: RepoService) {}
 
-  onModuleInit() {
-    this.repoService.client.subscribeToResponseOf('math.sum');
-    this.repoService.client.connect();
-  }
-
   @Query(() => [Initiative])
   public async getInitiatives(): Promise<Initiative[]> {
     return this.repoService.initiativeRepo.find();
@@ -30,12 +25,9 @@ export default class InitiatieResolver {
     const initiative = this.repoService.initiativeRepo.create({
       name: input.name,
       description: input.description,
+      userId: input.userId,
     });
 
-    await this.repoService.initiativeRepo.save(initiative);
-
-    return await this.repoService.client.send('math.sum', {
-      numbers: [1, 2, 3, 4, 5],
-    }).toPromise();
+    return await this.repoService.initiativeRepo.save(initiative);
   }
 }
